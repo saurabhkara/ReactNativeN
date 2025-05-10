@@ -1,7 +1,8 @@
-import { NavigationContainer, createNavigationContainerRef} from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer, createNavigationContainerRef} from '@react-navigation/native';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import {createNativeStackNavigator} from "@react-navigation/native-stack"
 import {createDrawerNavigator}  from "@react-navigation/drawer"
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Feed from './screens/Feed';
 import Settings from './screens/Settings';
 import Notifications from './screens/Notifications';
@@ -9,7 +10,8 @@ import FeedDetail from './screens/FeedDetail';
 import NotificationDetail from './screens/NotificationDetail';
 import SettingsDetail from './screens/SettingsDetail';
 import Payment from './screens/Payment';
-
+import Following from './screens/Following';
+import {useColorScheme} from "react-native"
 export const navigationRef = createNavigationContainerRef();
 
 //Stack Navigation 
@@ -60,7 +62,7 @@ function TabGroup(){
                 headerShown:false
             }}
         >
-            <Tab.Screen  name="Feed" component={Feed}/>
+            <Tab.Screen  name="TopTabGroup" component={TopTabGroup}/>
             <Tab.Screen  name="Settings" component={SettingGroup}/>
             <Tab.Screen  name="Notifications" component={NotificationStackGroup}/>
         </Tab.Navigator>
@@ -82,11 +84,23 @@ function DrawerNavigator(){
 
 }
 
+// Top Tab
+const TopTab = createMaterialTopTabNavigator();
+
+
+function TopTabGroup() {
+  return (
+    <TopTab.Navigator>
+      <TopTab.Screen name="Feed" component={Feed} />
+      <TopTab.Screen name="Following" component={Following} />
+    </TopTab.Navigator>
+  );
+}
 
 export default function Navigation() {
-
+    const theme = useColorScheme();
     return (
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer ref={navigationRef} theme={theme==='dark' ? DarkTheme : DefaultTheme} >
             <DrawerNavigator/>
         </NavigationContainer>
     )
